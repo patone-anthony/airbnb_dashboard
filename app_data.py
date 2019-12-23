@@ -13,6 +13,25 @@ df['last_review'] = pd.to_datetime(df['last_review'])
 
 boroughs = df['neighbourhood_group'].unique()
 
+mapbox_access_token = 'pk.eyJ1IjoicGF0b25lLWFudGhvbnkiLCJhIjoiY2s0aWsyZnpwMWxyaTNubzY2bG10dHF1YSJ9.J6X5nymCsrrJ0GPAU3wgHg'
+
+layout = dict(
+    autosize=True,
+    automargin=True,
+    margin=dict(l=30, r=30, b=20, t=40),
+    hovermode="closest",
+    plot_bgcolor="#F9F9F9",
+    paper_bgcolor="#F9F9F9",
+    legend=dict(font=dict(size=10), orientation="h"),
+    mapbox=dict(
+        accesstoken=mapbox_access_token,
+        style="light",
+        center=dict(lon=-40.7549, lat=73.9840),
+        zoom=7,
+    ),
+)
+
+
 app = dash.Dash(__name__)
 
 app.layout = html.Div([
@@ -114,6 +133,19 @@ app.layout = html.Div([
             html.Div([
                 dcc.Graph(id='graph-all-apps'),
             ], className='nine columns pretty_container'),
+
+        ], className='row flex-display'),
+
+
+        html.Div([
+            html.Div([
+                dcc.Graph(id='geomap'),
+            ], className='seven columns pretty_container'),
+
+            html.Div([
+                dcc.Graph(id='top_ten_graph'),
+            ], className='five columns pretty_container'),
+
         ], className='row flex-display'),
 
 
@@ -132,6 +164,15 @@ app.layout = html.Div([
 
 
 @app.callback(
+    Output('output-price_rangeslider', 'children'),
+    [Input('price_rangeslider', 'value')])
+def update_output(value):
+    min_value = value[0]
+    max_value = value[1]
+    return f'Min Price: ${min_value}, Max Price: ${max_value}'
+
+
+@app.callback(
     Output('graph-all-apps', 'figure'),
     [Input('date-picker-range', 'start_date'),
      Input('date-picker-range', 'end_date'),
@@ -147,53 +188,122 @@ def update_figure(start_date, end_date, value, borough_values, room_values):
     final_df = pd.DataFrame()
 
     for borough_value in borough_values:
-        filter_df = df[df['neighbourhood_group'] == borough_value]
-        final_df = final_df.append(filter_df)
+        borough_filter = filter_df[filter_df['neighbourhood_group'] == borough_value]
+        final_df = final_df.append(borough_filter)
+
+    final_df1 = pd.DataFrame()
 
     for room_value in room_values:
-        filter_df = df[df['neighbourhood_group'] == borough_value]
-        final_df = final_df.append(filter
-
+        room_filter = final_df[final_df['room_type'] == room_value]
+        final_df1 = final_df1.append(room_filter)
 
     fig = go.Figure()
-    fig.add_trace(go.Histogram(histfunc="count", x=final_df['neighbourhood_group']))
+    fig.add_trace(go.Histogram(histfunc="count",
+                               x=final_df1['neighbourhood_group'],
+                               # color='lifeExp'
+                               ))
     return fig
 
 
+@app.callback(
+    Output('geomap', 'figure'),
+    [Input('date-picker-range', 'start_date'),
+     Input('date-picker-range', 'end_date'),
+     Input('price_rangeslider', 'value'),
+     Input('borough_dropdown', 'value'),
+     Input('room_checklist', 'value')])
+def goelocation_graph(start_date, end_date, value, borough_values, room_values):
+    min_price = value[0]
+    max_price = value[1]
+    filter_df = df[(df['last_review'] >= start_date) & (df['last_review'] <= end_date)]
+    filter_df = filter_df[(filter_df['price'] >= min_price) & (filter_df['price'] <= max_price)]
 
+    final_df = pd.DataFrame()
 
+    for borough_value in borough_values:
+        borough_filter = filter_df[filter_df['neighbourhood_group'] == borough_value]
+        final_df = final_df.append(borough_filter)
+
+    final_df1 = pd.DataFrame()
+
+    for room_value in room_values:
+        room_filter = final_df[final_df['room_type'] == room_value]
+        final_df1 = final_df1.append(room_filter)
+
+    # final_df1.dropna()
+
+    fig = go.Figure(go.Scattermapbox(
+        lat=final_df1['latitude'],
+        lon=final_df1['longitude'],
+        mode='markers',
+        marker=go.scattermapbox.Marker(
+            size=9
+        ),
+        text=final_df1['name'],
+    ))
+
+    fig.update_layout(
+        autosize=True,
+        margin=dict(l=0, r=0, b=0, t=0),
+        plot_bgcolor="#F9F9F9",
+        paper_bgcolor="#F9F9F9",
+        hovermode='closest',
+        mapbox=go.layout.Mapbox(
+            accesstoken=mapbox_access_token,
+            bearing=0,
+            style="light",
+            center=go.layout.mapbox.Center(
+                lat=40.7549,
+                lon=-73.9840
+            ),
+            pitch=0,
+            zoom=13,
+        ),
+    )
+
+    return fig
 
 
 @app.callback(
-    Output('output-price_rangeslider', 'children'),
-    [Input('price_rangeslider', 'value')])
-def update_output(value):
-    min_value = value[0]
-    max_value = value[1]
-    return f'Min Price: ${min_value}, Max Price: ${max_value}'
+    Output('top_ten_graph', 'figure'),
+    [Input('date-picker-range', 'start_date'),
+     Input('date-picker-range', 'end_date'),
+     Input('price_rangeslider', 'value'),
+     Input('borough_dropdown', 'value'),
+     Input('room_checklist', 'value')])
+def top_ten(start_date, end_date, value, borough_values, room_values):
+    min_price = value[0]
+    max_price = value[1]
+    filter_df = df[(df['last_review'] >= start_date) & (df['last_review'] <= end_date)]
+    filter_df = filter_df[(filter_df['price'] >= min_price) & (filter_df['price'] <= max_price)]
+
+    final_df = pd.DataFrame()
+
+    for borough_value in borough_values:
+        borough_filter = filter_df[filter_df['neighbourhood_group'] == borough_value]
+        final_df = final_df.append(borough_filter)
+
+    final_df1 = pd.DataFrame()
+
+    for room_value in room_values:
+        room_filter = final_df[final_df['room_type'] == room_value]
+        final_df1 = final_df1.append(room_filter)
+
+    final_df1.dropna()
+
+    fig = go.Figure(go.Bar(
+        x=df['neighbourhood'].value_counts()[:10].tolist(),
+        y=df['neighbourhood'].value_counts()[:10].index.tolist(),
+        orientation='h',
+        marker={'color': df['neighbourhood'].value_counts()[:10].tolist(),
+                'colorscale': 'Viridis'}))
+    
+    fig.update_layout(yaxis=dict(autorange="reversed"))
+
+    return fig
+
 
 
 if __name__ == '__main__':
     app.run_server(debug=True)
 
-
-
-
-        # dcc.Graph(id='graph-with-slider'),
-    #     dcc.Slider(
-    #             id='year-slider',
-    #             min=df['release_month'].min(),
-    #             max=df['release_month'].max(),
-    #             value=df['release_month'].min(),
-    #             marks={str(month): str(month) for year in df['release_month'].unique()},
-    #             step=None
-    #         )
-    # ], className='ten columns',)
-
-    # df = df.loc[df['Original Release Date'] > pd.Timestamp(2018, 1, 1)]
-
-    #
-    # for i in range(len(months)-1):
-    #     label_marks[i] = {k: v for k, v in enumerate(months)}
-    #
-    # label_marks = {}
