@@ -48,7 +48,6 @@
   float: left;
   box-sizing: border-box; }
 
-
  .flex-display {
   display: flex;
 }
@@ -61,6 +60,9 @@
     font-weight: bold !important;
 }
 
+#price_rangeslider {
+    padding: 5px 0px !important;
+}
 
 
 
