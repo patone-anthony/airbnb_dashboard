@@ -100,10 +100,10 @@ body {
     width: 80%; }
   .column,
   /* .columns {
-    margin-left: 4%; } */
+
   .column:first-child,
   .columns:first-child {
-    margin-left: 0; }
+    margin-left: 0; } */
 
   .one.column,
   .one.columns                    { width: 4.66666666667%; }
@@ -452,3 +452,22 @@ there.
 
 /* Larger than Desktop HD */
 @media (min-width: 1200px) {}
+
+
+.fill_container {
+  height: calc(100% - 30px);
+  width: calc(100% - 30px);
+}
+
+#geomap {
+  position: relative;
+  height: calc(100% - 30px);
+  width: calc(100% - 30px);
+  margin: 0 ;
+}
+
+#top_ten_graph {
+  position: relative;
+  height: calc(100% - 30px);
+  width: calc(100% - 30px);
+}

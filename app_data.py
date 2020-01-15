@@ -131,7 +131,7 @@ app.layout = html.Div([
             ], className='three columns pretty_container'),
 
             html.Div([
-                dcc.Graph(id='graph-all-apps'),
+                dcc.Graph(id='geomap'),
             ], className='nine columns pretty_container'),
 
         ], className='row flex-display'),
@@ -139,7 +139,7 @@ app.layout = html.Div([
 
         html.Div([
             html.Div([
-                dcc.Graph(id='geomap'),
+                dcc.Graph(id='graph-all-apps'),
             ], className='seven columns pretty_container'),
 
             html.Div([
@@ -147,8 +147,6 @@ app.layout = html.Div([
             ], className='five columns pretty_container'),
 
         ], className='row flex-display'),
-
-
 
     ],
         style={
@@ -158,9 +156,10 @@ app.layout = html.Div([
     ),
 ],
     style={
-        "margin": "0 auto",
+        "margin": "auto",
     }
 )
+
 
 
 @app.callback(
@@ -170,6 +169,66 @@ def update_output(value):
     min_value = value[0]
     max_value = value[1]
     return f'Min Price: ${min_value}, Max Price: ${max_value}'
+
+
+@app.callback(
+    Output('geomap', 'figure'),
+    [Input('date-picker-range', 'start_date'),
+     Input('date-picker-range', 'end_date'),
+     Input('price_rangeslider', 'value'),
+     Input('borough_dropdown', 'value'),
+     Input('room_checklist', 'value')])
+def goelocation_graph(start_date, end_date, value, borough_values, room_values):
+    min_price = value[0]
+    max_price = value[1]
+    filter_df = df[(df['last_review'] >= start_date) & (df['last_review'] <= end_date)]
+    filter_df = filter_df[(filter_df['price'] >= min_price) & (filter_df['price'] <= max_price)]
+
+    final_df = pd.DataFrame()
+
+    for borough_value in borough_values:
+        borough_filter = filter_df[filter_df['neighbourhood_group'] == borough_value]
+        final_df = final_df.append(borough_filter)
+
+    final_df1 = pd.DataFrame()
+
+    for room_value in room_values:
+        room_filter = final_df[final_df['room_type'] == room_value]
+        final_df1 = final_df1.append(room_filter)
+
+    # final_df1.dropna()
+
+
+    fig = go.Figure(go.Scattermapbox(
+        lat=final_df1['latitude'],
+        lon=final_df1['longitude'],
+        mode='markers',
+        marker=go.scattermapbox.Marker(
+            size=9
+        ),
+        text=final_df1['name'],
+    ))
+
+    fig.update_layout(
+        autosize=True,
+        margin=dict(l=0, r=0, b=0, t=0),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        hovermode='closest',
+        mapbox=go.layout.Mapbox(
+            accesstoken=mapbox_access_token,
+            bearing=0,
+            style="light",
+            center=go.layout.mapbox.Center(
+                lat=40.7549,
+                lon=-73.9840
+            ),
+            pitch=0,
+            zoom=13,
+        ),
+    )
+
+    return fig
 
 
 @app.callback(
@@ -202,66 +261,15 @@ def update_figure(start_date, end_date, value, borough_values, room_values):
                                x=final_df1['neighbourhood_group'],
                                # color='lifeExp'
                                ))
-    return fig
-
-
-@app.callback(
-    Output('geomap', 'figure'),
-    [Input('date-picker-range', 'start_date'),
-     Input('date-picker-range', 'end_date'),
-     Input('price_rangeslider', 'value'),
-     Input('borough_dropdown', 'value'),
-     Input('room_checklist', 'value')])
-def goelocation_graph(start_date, end_date, value, borough_values, room_values):
-    min_price = value[0]
-    max_price = value[1]
-    filter_df = df[(df['last_review'] >= start_date) & (df['last_review'] <= end_date)]
-    filter_df = filter_df[(filter_df['price'] >= min_price) & (filter_df['price'] <= max_price)]
-
-    final_df = pd.DataFrame()
-
-    for borough_value in borough_values:
-        borough_filter = filter_df[filter_df['neighbourhood_group'] == borough_value]
-        final_df = final_df.append(borough_filter)
-
-    final_df1 = pd.DataFrame()
-
-    for room_value in room_values:
-        room_filter = final_df[final_df['room_type'] == room_value]
-        final_df1 = final_df1.append(room_filter)
-
-    # final_df1.dropna()
-
-    fig = go.Figure(go.Scattermapbox(
-        lat=final_df1['latitude'],
-        lon=final_df1['longitude'],
-        mode='markers',
-        marker=go.scattermapbox.Marker(
-            size=9
-        ),
-        text=final_df1['name'],
-    ))
 
     fig.update_layout(
-        autosize=True,
-        margin=dict(l=0, r=0, b=0, t=0),
-        plot_bgcolor="#F9F9F9",
-        paper_bgcolor="#F9F9F9",
-        hovermode='closest',
-        mapbox=go.layout.Mapbox(
-            accesstoken=mapbox_access_token,
-            bearing=0,
-            style="light",
-            center=go.layout.mapbox.Center(
-                lat=40.7549,
-                lon=-73.9840
-            ),
-            pitch=0,
-            zoom=13,
-        ),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
     )
 
     return fig
+
+
 
 
 @app.callback(
@@ -297,8 +305,13 @@ def top_ten(start_date, end_date, value, borough_values, room_values):
         orientation='h',
         marker={'color': df['neighbourhood'].value_counts()[:10].tolist(),
                 'colorscale': 'Viridis'}))
-    
-    fig.update_layout(yaxis=dict(autorange="reversed"))
+
+    fig.update_layout(
+        yaxis=dict(autorange="reversed"),
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        margin=dict(l=0, r=0, b=0, t=0),
+    )
 
     return fig
 

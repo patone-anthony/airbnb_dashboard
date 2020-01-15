@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f97ebba8-480f-426c-84df-bdb9eba9af7e" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/Dash.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Dash.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.ipynb_checkpoints/app_exploration-checkpoint.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/.ipynb_checkpoints/app_exploration-checkpoint.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/app_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app_exploration.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/app_exploration.ipynb" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/style.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -24,6 +23,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
@@ -83,30 +83,30 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="1243" y="173" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1576421454097">
+    <state x="1243" y="173" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1578159321899">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
-    <state x="1243" y="173" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1440@0.0.2560.1440" timestamp="1576421454097" />
-    <state x="1645" y="463" key="FileChooserDialogImpl" timestamp="1577042218361">
+    <state x="1243" y="173" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.2560.1440@0.0.2560.1440" timestamp="1578159321899" />
+    <state x="1645" y="463" key="FileChooserDialogImpl" timestamp="1578769138541">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
-    <state x="1645" y="463" key="FileChooserDialogImpl/0.0.2560.1440@0.0.2560.1440" timestamp="1577042218361" />
-    <state width="1348" height="276" key="GridCell.Tab.0.bottom" timestamp="1577136784385">
+    <state x="1645" y="463" key="FileChooserDialogImpl/0.0.2560.1440@0.0.2560.1440" timestamp="1578769138541" />
+    <state width="1348" height="269" key="GridCell.Tab.0.bottom" timestamp="1579056867139">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
-    <state width="1348" height="276" key="GridCell.Tab.0.bottom/0.0.2560.1440@0.0.2560.1440" timestamp="1577136784385" />
-    <state width="1348" height="276" key="GridCell.Tab.0.center" timestamp="1577136784385">
+    <state width="1348" height="269" key="GridCell.Tab.0.bottom/0.0.2560.1440@0.0.2560.1440" timestamp="1579056867139" />
+    <state width="1348" height="269" key="GridCell.Tab.0.center" timestamp="1579056867139">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
-    <state width="1348" height="276" key="GridCell.Tab.0.center/0.0.2560.1440@0.0.2560.1440" timestamp="1577136784385" />
-    <state width="1348" height="276" key="GridCell.Tab.0.left" timestamp="1577136784385">
+    <state width="1348" height="269" key="GridCell.Tab.0.center/0.0.2560.1440@0.0.2560.1440" timestamp="1579056867139" />
+    <state width="1348" height="269" key="GridCell.Tab.0.left" timestamp="1579056867139">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
-    <state width="1348" height="276" key="GridCell.Tab.0.left/0.0.2560.1440@0.0.2560.1440" timestamp="1577136784385" />
-    <state width="1348" height="276" key="GridCell.Tab.0.right" timestamp="1577136784385">
+    <state width="1348" height="269" key="GridCell.Tab.0.left/0.0.2560.1440@0.0.2560.1440" timestamp="1579056867139" />
+    <state width="1348" height="269" key="GridCell.Tab.0.right" timestamp="1579056867139">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
-    <state width="1348" height="276" key="GridCell.Tab.0.right/0.0.2560.1440@0.0.2560.1440" timestamp="1577136784385" />
+    <state width="1348" height="269" key="GridCell.Tab.0.right/0.0.2560.1440@0.0.2560.1440" timestamp="1579056867139" />
     <state width="1436" height="507" key="GridCell.Tab.1.bottom" timestamp="1577009710981">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
@@ -123,14 +123,14 @@
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
     <state width="1436" height="507" key="GridCell.Tab.1.right/0.0.2560.1440@0.0.2560.1440" timestamp="1577009710981" />
-    <state x="1290" y="161" key="SettingsEditor" timestamp="1576421467900">
+    <state x="1290" y="161" key="SettingsEditor" timestamp="1579048269094">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
-    <state x="1290" y="161" key="SettingsEditor/0.0.2560.1440@0.0.2560.1440" timestamp="1576421467900" />
-    <state x="1485" y="342" key="com.intellij.ide.util.TipDialog" timestamp="1577110856585">
+    <state x="1290" y="161" key="SettingsEditor/0.0.2560.1440@0.0.2560.1440" timestamp="1579048269094" />
+    <state x="1485" y="342" key="com.intellij.ide.util.TipDialog" timestamp="1578769128673">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
-    <state x="1485" y="342" key="com.intellij.ide.util.TipDialog/0.0.2560.1440@0.0.2560.1440" timestamp="1577110856585" />
+    <state x="1485" y="342" key="com.intellij.ide.util.TipDialog/0.0.2560.1440@0.0.2560.1440" timestamp="1578769128673" />
     <state x="1526" y="318" width="607" height="804" key="find.popup" timestamp="1577042730587">
       <screen x="0" y="0" width="2560" height="1440" />
     </state>
